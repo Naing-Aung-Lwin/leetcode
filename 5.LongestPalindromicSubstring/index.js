@@ -1,35 +1,39 @@
 /**
  * https://leetcode.com/problems/longest-palindromic-substring/
- * @param {string} s
- * @return {string}
  */
+
+var isReverseEqual = function (arr) {
+  const str = arr.join("");
+  let strReverse = "";
+  for (let i = arr.length - 1; i >= 0; i--) {
+    strReverse += arr[i];
+  }
+  if (str === strReverse) return true;
+  return false;
+};
+
 var longestPalindrome = function (s) {
   if (s.length < 1 || s.length > 1000) return "";
   const palindromic = [];
   const strArray = s.split("");
   for (let i = 0; i < strArray.length; i++) {
     const parentValue = strArray[i];
-    let arr = [parentValue];
-    let isSame = false
+    const arr = [parentValue];
     for (let j = i + 1; j < strArray.length; j++) {
       const childValue = strArray[j];
-      if (isSame && parentValue !== childValue) {
-        break;
+      arr.push(childValue);
+      if (isReverseEqual(arr)) {
+        palindromic.push(arr.join(""));
       }
-      if (parentValue === childValue) {
-        isSame = true;
-      }
-      arr.push(childValue)
     }
-    console.log(arr, isSame)
-    palindromic.push({arr, isSame})
   }
-  const isPalindromic = palindromic.filter(p => p.isSame);
-  if (isPalindromic && isPalindromic.length > 0) {
-    return isPalindromic[0].arr.join('')
+  let result = s;
+  if (palindromic.length > 0) {
+    const sortedArr = palindromic.sort((a, b) => b.length - a.length);
+    result = sortedArr[0];
   }
-  return palindromic[0].arr.join('');
+  return result;
 };
 
-const s = "ac";
+const s = "jglknendplocymmvwtoxvebkekzfdhykknufqdkntnqvgfbahsljkobhbxkvyictzkqjqydczuxjkgecdyhixdttxfqmgksrkyvopwprsgoszftuhawflzjyuyrujrxluhzjvbflxgcovilthvuihzttzithnsqbdxtafxrfrblulsakrahulwthhbjcslceewxfxtavljpimaqqlcbrdgtgjryjytgxljxtravwdlnrrauxplempnbfeusgtqzjtzshwieutxdytlrrqvyemlyzolhbkzhyfyttevqnfvmpqjngcnazmaagwihxrhmcibyfkccyrqwnzlzqeuenhwlzhbxqxerfifzncimwqsfatudjihtumrtjtggzleovihifxufvwqeimbxvzlxwcsknksogsbwwdlwulnetdysvsfkonggeedtshxqkgbhoscjgpiel";
 console.log(longestPalindrome(s));
